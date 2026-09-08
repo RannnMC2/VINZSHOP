@@ -37,6 +37,27 @@
   </header>
 
   <div class="toolbar">
+    <script>
+function applyFilter() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const sort = document.getElementById('sort').value;
+  let products = [...document.querySelectorAll('.produk')];
+
+  // FILTER DULU
+  products.forEach(p => {
+    const matchGame = currentFilter === 'all' || p.dataset.game === currentFilter;
+    const keywords = p.innerText.toLowerCase();
+    const matchSearch = keywords.includes(search); // bisa cari "kolektor" "epic" "murah"
+    p.classList.toggle('hidden', !(matchGame && matchSearch));
+  });
+
+  // SORTING
+  if(sort !== 'default') {
+    products.sort((a,b) => sort === 'low' ? a.dataset.harga - b.dataset.harga : b.dataset.harga - a.dataset.harga);
+    document.getElementById('grid').append(...products);
+  }
+}
+    </script>
     <input type="text" id="search" placeholder="Cari akun... contoh: kolektor">
     <select id="sort">
       <option value="default">Urutkan</option>
