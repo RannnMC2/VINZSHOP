@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VINZSHOP Search</title>
+  <style>
+    body { background:#0a0a0a; color:#fff; font-family:Arial; text-align:center; padding:50px; }
+    input { width:60%; padding:15px; border-radius:30px; border:2px solid #00ff88; background:#111; color:#fff; font-size:16px; }
+    button { padding:15px 30px; border-radius:30px; border:none; background:#00ff88; color:#000; font-weight:bold; cursor:pointer; }
+    .result { text-align:left; max-width:800px; margin:20px auto; background:#111; padding:15px; border-radius:10px; }
+    .result a { color:#00aaff; font-size:18px; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <h1 style="color:#00ff88;">VINZSHOP SEARCH ENGINE</h1>
+  <input type="text" id="query" placeholder="Cari apa saja...">
+  <button onclick="search()">CARI</button>
+  <div id="hasil"></div>
+
+<script>
+async function search() {
+  let q = document.getElementById('query').value;
+  let url = `https://api.duckduckgo.com/?q=${q}&format=json&no_html=1`;
+  
+  let res = await fetch(url);
+  let data = await res.json();
+  
+  let hasil = document.getElementById('hasil');
+  hasil.innerHTML = '';
+  
+  data.RelatedTopics.forEach(item => {
+    if(item.Text && item.FirstURL){
+      hasil.innerHTML += `
+        <div class="result">
+          <a href="${item.FirstURL}" target="_blank">${item.Text}</a>
+        </div>
+      `;
+    }
+  });
+}
+</script>
+</body>
+</html>
